@@ -26,8 +26,8 @@ const layouts = {
             renderKey={config.renderKey}
             conf={currentItem}
             onInput={event => this.$set(config, "defaultValue", event)}
-            onCustomEmit={(event, index, obj, key) =>
-              this.$set(currentItem[obj][key][index], "content", event)
+            onCustomEmit={(event, index, customKey, obj, key) =>
+              this.$set(currentItem[obj][key][index], customKey, event)
             }
           >
             {children}

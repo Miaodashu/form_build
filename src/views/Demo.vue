@@ -1,38 +1,46 @@
 <template>
   <div class="about">
-    <el-form
-      :label-position="formConf.labelPosition"
-      :label-width="formConf.labelWidth + 'px'"
-      :size="formConf.size"
-      :disabled="formConf.disabled"
-    >
-      <preview-item
-        v-for="item in jsonList"
-        :key="item.renderKey"
-        :drawing-list="jsonList"
-        :current-item="item"
-      />
-    </el-form>
+    <div id="preview"></div>
   </div>
 </template>
 <script>
-import PreviewItem from "./PreviewItem.vue";
 import { formConf } from "@/components/generator/config.js";
+import { formBuild } from "@/components/generator/buildFrom.js";
+import { buildJs } from "@/components/generator/js.js";
+import init from "@/components/preview/index.js";
 export default {
   name: "Demo",
-  components: { PreviewItem },
   data() {
     return {
       jsonList: [],
-      formConf
+      formConf,
+      htmlList: ""
     };
   },
   methods: {},
   mounted() {
     this.jsonList = JSON.parse(sessionStorage.getItem("templateData"));
+    let options = {
+      comList: this.jsonList,
+      formConf: this.formConf
+    };
+    let htmlCode = formBuild(options);
+    let jsCode = buildJs(options);
+    // console.log(init);
+    init(htmlCode, jsCode, "#preview");
+    // console.log(buildJs(options));
+    // formBuild(options);
   },
   beforeDestroy() {
     sessionStorage.removeItem("templateData");
   }
 };
 </script>
+<style lang="less" scoped>
+.about {
+  padding: 20px;
+}
+/deep/ .el-rate {
+  line-height: 47px;
+}
+</style>

@@ -8,7 +8,8 @@ export const formConf = {
   formRules: "rules", // 表单验证规则
   gutter: 15, //栅格化后每列间距值
   disabled: false, // 是否禁用该表单内的所有组件。
-  span: 24 // 栅格化
+  span: 24, // 栅格化
+  formBtns: true // 最后预览的时候需不需要一个底部提交按钮
 };
 
 // 基础组件 【左面板】
@@ -27,19 +28,13 @@ export const baseComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
-    },
-    // 组件的插槽属性
-    __slot__: {
-      prepend: "",
-      append: ""
+      rules: "",
+      rulesMsg: ""
     },
     // 其余的为可直接写在组件标签上的属性
     placeholder: "请输入",
     style: { width: "100%" },
     clearable: true,
-    "prefix-icon": "",
-    "suffix-icon": "",
     maxlength: 15,
     "show-word-limit": false,
     readonly: false,
@@ -58,7 +53,8 @@ export const baseComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     type: "textarea",
     // 其余的为可直接写在组件标签上的属性
@@ -76,8 +72,9 @@ export const baseComponents = [
     __config__: {
       label: "标题组件", // 标题
       tag: "titleCom", // 组件name
-      tagIcon: "textarea", // 左边面板的展示icon
+      tagIcon: "title", // 左边面板的展示icon
       defaultValue: "我是标题",
+      custom: true, // 是否是自定义组件
       layout: "raw" // 组件的布局容器属性
     },
     // 其余的为可直接写在组件标签上的属性
@@ -91,7 +88,6 @@ export const baseComponents = [
     __config__: {
       label: "计数器",
       showLabel: true,
-
       labelWidth: null,
       tag: "el-input-number",
       tagIcon: "number",
@@ -99,7 +95,8 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     placeholder: "",
     min: 0,
@@ -122,7 +119,8 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     placeholder: "",
     "show-password": true,
@@ -141,15 +139,14 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     disabled: false,
     "active-text": "", // switch 打开时的文字描述
     "inactive-text": "", // switch 关闭时的文字描述
     "active-color": "#409EFF", // switch 打开时的背景色
-    "inactive-color": "#C0CCDA", // switch 关闭时的背景色
-    "active-value": "true", // switch 打开时的值 boolean / string / number
-    "inactive-value": "false" // switch 关闭时的值 boolean / string / number
+    "inactive-color": "#C0CCDA" // switch 关闭时的背景色
   },
   {
     __config__: {
@@ -162,7 +159,8 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     disabled: false,
     min: 0,
@@ -184,7 +182,8 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     disabled: false,
     max: 5,
@@ -193,16 +192,18 @@ export const baseComponents = [
   },
   {
     __config__: {
-      label: "编辑器",
+      label: "富文本",
       showLabel: true,
       labelWidth: null,
+      custom: true, // 是否是自定义组件
       tag: "tinymce",
       tagIcon: "tinymce",
       defaultValue: undefined,
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     }
   },
   {
@@ -216,7 +217,8 @@ export const baseComponents = [
       span: 24,
       layout: "colFormItem",
       required: true,
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     disabled: false,
     __slot__: {
@@ -235,7 +237,6 @@ export const selectComponents = [
       label: "下拉框", // 标题
       labelWidth: null, // 标签宽度
       showLabel: true, // 展示标题
-
       tag: "el-select", // 组件name
       tagIcon: "select", // 左边面板的展示icon
       defaultValue: undefined,
@@ -243,7 +244,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: [],
+      rules: "",
+      rulesMsg: "",
       methods: "get", // 接口请求方式
       url: "https://www.xxx.cn/api", //接口地址
       dataPath: "list", // 接口返回数据所在的自字段
@@ -286,7 +288,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 组件的插槽属性
     __slot__: {
@@ -308,7 +311,6 @@ export const selectComponents = [
     // 其余的为可直接写在组件标签上的属性
     placeholder: "请输入",
     style: { width: "50%" },
-    clearable: true,
     disabled: false,
     border: false,
     size: "medium"
@@ -318,6 +320,7 @@ export const selectComponents = [
     __config__: {
       label: "单选框(特)", // 标题
       labelWidth: null, // 标签宽度
+      custom: true, // 是否是自定义组件
       showLabel: true, // 展示标题
       tag: "comRadio", // 组件name
       tagIcon: "radio", // 左边面板的展示icon
@@ -326,7 +329,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 自定义组件的props
     props: {
@@ -368,7 +372,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 组件的插槽属性
     __slot__: {
@@ -410,7 +415,8 @@ export const selectComponents = [
       // 所以放在__slot__里面，其他的就放在自定义字段的里面比如级联选择器
       dataType: "dynamic", // 表示数据是异步动态获取，如果没有设置该字段或为其他(static)  则表示是静态数据
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     options: [
       {
@@ -454,7 +460,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 其余的为可直接写在组件标签上的属性
     placeholder: "请输入",
@@ -478,7 +485,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 其余的为可直接写在组件标签上的属性
     "start-placeholder": "开始日期",
@@ -503,7 +511,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 其余的为可直接写在组件标签上的属性
     placeholder: "请选择时间",
@@ -525,7 +534,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     },
     // 其余的为可直接写在组件标签上的属性
     "start-placeholder": "开始时间",
@@ -543,6 +553,7 @@ export const selectComponents = [
     __config__: {
       label: "图片上传", // 标题
       labelWidth: null, // 标签宽度
+      custom: true, // 是否是自定义组件
       showLabel: true, // 展示标题
       tag: "uploadImg", // 组件name
       tagIcon: "upload", // 左边面板的展示icon
@@ -552,7 +563,8 @@ export const selectComponents = [
       layout: "colFormItem", // 组件的布局容器属性
       span: 24, // 表单栅格
       // 正则校验规则
-      regList: []
+      rules: "",
+      rulesMsg: ""
     }
   }
 ];

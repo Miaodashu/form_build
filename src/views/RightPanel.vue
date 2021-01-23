@@ -175,7 +175,7 @@
         >
           <el-input v-model="activeData['active-value']"></el-input>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="关闭的值"
           v-if="activeData['inactive-value'] !== undefined"
         >
@@ -186,7 +186,7 @@
           v-if="activeData['active-text'] !== undefined"
         >
           <el-input v-model="activeData['active-text']"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="关闭描述"
           v-if="activeData['inactive-text'] !== undefined"
@@ -372,7 +372,11 @@
               <br />
               <template v-if="item.remark">
                 <span class="options-title hot">备注内容</span
-                ><el-input style="width:60%" size="mini" v-model="item.content"></el-input>
+                ><el-input
+                  style="width:60%"
+                  size="mini"
+                  v-model="item.content"
+                ></el-input>
               </template>
               <div style="marginTop:10px" v-if="item.remark">
                 <span class="options-title hot">是否必填</span
@@ -417,7 +421,7 @@
               <div
                 v-for="(item, index) in activeData.__slot__.options"
                 :key="item.value + index"
-                class="options-item"
+                class="options-item hot"
               >
                 <el-input
                   class="options-input"
@@ -431,20 +435,6 @@
                   placeholder="值"
                   size="small"
                 />
-                <template v-if="item.remark !== undefined">
-                  <br />
-                  <span class="options-title hot">是否备注</span
-                  ><el-switch v-model="item.remark"></el-switch>
-                  <template v-if="item.remark">
-                    <span class="options-title hot">备注内容</span
-                    ><el-input v-model="item.content"></el-input>
-                  </template>
-                  <template v-if="item.remark">
-                    <span class="options-title hot">是否必填</span
-                    ><el-switch v-model="item.required"></el-switch>
-                  </template>
-                  <br />
-                </template>
                 <el-button
                   size="mini"
                   @click="handleDelOptions(index, '__slot__')"
@@ -500,6 +490,36 @@
             </el-tab-pane>
           </el-tabs>
         </template>
+        <template
+          v-if="
+            activeData.keyName !== undefined &&
+              activeData.__config__.rules !== undefined
+          "
+        >
+          <el-divider>校验规则</el-divider>
+          <el-form-item
+            label="校验规则"
+            v-if="activeData.__config__.rules !== undefined"
+          >
+            <el-select v-model="activeData.__config__.rules" clearable>
+              <el-option
+                v-for="item in rulesList"
+                :value="item.value"
+                :key="item.name"
+                :label="item.name"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="校验提示"
+            v-if="
+              activeData.__config__.rules &&
+                activeData.__config__.rulesMsg !== undefined
+            "
+          >
+            <el-input v-model="activeData.__config__.rulesMsg"></el-input>
+          </el-form-item>
+        </template>
       </el-form>
       <el-form
         v-if="activeName === 'second'"
@@ -547,6 +567,7 @@
 
 <script>
 let id = 1000;
+import rulesList from "@/utils/rulesList.js";
 export default {
   name: "rightPanel",
   props: ["formConf", "activeData", "showOptions"],
@@ -624,7 +645,8 @@ export default {
           label: "文字按钮",
           value: "text"
         }
-      ]
+      ],
+      rulesList //校验规则集合
     };
   },
   computed: {
@@ -781,9 +803,11 @@ export default {
   }
   .options-item {
     margin-bottom: 15px;
-    // display: flex;
-    // align-items: center;
-    // justify-content: space-around;
+    &.hot {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
   }
   .options-input {
     width: 40%;

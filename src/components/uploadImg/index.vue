@@ -42,7 +42,7 @@ export default {
     size: {
       default: 1 //1MB默认
     },
-    limit:{
+    limit: {
       default: 3 //最多上传三张
     }
   },
@@ -97,11 +97,13 @@ export default {
       console.log(res, file, fileList);
       file.url = this.domain + file.response.key;
       this.uploadList.push(file.url);
+      this.$emit('uploadSuccess', this.uploadList)
     },
     // eslint-disable-next-line no-unused-vars
     handleRemove(file, fileList) {
       this.fileList = this.uploadList.filter(el => el !== file.url);
       console.log(this.fileList);
+      this.$emit('uploadSuccess', this.uploadList)
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

@@ -129,7 +129,7 @@ import {
   formConf,
   selectComponents
 } from "@/components/generator/config.js";
-
+// import { formBuild } from "@/components/generator/buildFrom.js";
 let tempActiveData;
 export default {
   name: "Home",
@@ -202,6 +202,12 @@ export default {
         "templateData",
         JSON.stringify(this.drawingList, null, 2)
       );
+      // let options = {
+      //   comList: this.drawingList,
+      //   formConf: this.formConf
+      // };
+      // let strArr = formBuild(options);
+      // console.log(JSON.stringify(strArr.join("\n"), null, 2));
       this.$router.push("/Demo");
     },
     // 查看JSON

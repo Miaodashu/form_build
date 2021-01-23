@@ -9,7 +9,7 @@
       <el-form-item
         label=" "
         label-width="12px"
-        v-if="item.remark && item.value === radioValue"
+        v-if="item.remark && item.value === value"
         :required="item.required"
         :key="item.value"
       >
@@ -25,10 +25,10 @@
 
 <script>
 export default {
-  props: ["options", "defaultValue"],
+  props: ["options", "value"],
   data() {
     return {
-      radioValue: this.defaultValue
+      radioValue: this.value
     };
   },
   methods: {
@@ -36,7 +36,7 @@ export default {
       this.$emit("input", e);
     },
     handleInput(event, index) {
-      this.$emit("customEvent", event, index, "props", "options");
+      this.$emit("customEvent", event, index, "content", "props", "options");
     }
   }
 };

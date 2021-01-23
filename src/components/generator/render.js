@@ -67,9 +67,9 @@ function buildDataObject(confClone, dataObject) {
         this.$emit("input", val);
       };
       // 监听自定义组件中的自定义事件
-      dataObject.on.customEvent = (event, index, obj, key) => {
+      dataObject.on.customEvent = (event, index, customKey, obj, key) => {
         // console.log('inputs',val, index);
-        this.$emit("customEmit", event, index, obj, key);
+        this.$emit("customEmit", event, index, customKey, obj, key);
       };
     }
     if (dataObject[el] !== undefined) {
