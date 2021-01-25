@@ -4,13 +4,19 @@ let globalConfig; // 全局表单配置数据
 let someSpanIsNot24; // 是否有节点栅格化不为24
 
 export const vueTemplate = (str) => {
-    return `<template><div>${str}</div></template>`
+    return `<template>
+    <div>
+        ${str}
+    </div>
+</template>\n`
 }
 export const vueStyle = () => {
     return "<style lang='less' scoped></style>"
 }
 export const vueScript = (str) => {
-    return `<script>export default ${str}</script>`
+    return `<script>
+    export default ${str}
+</script>\n`
 }
 
 // 标签解析器
@@ -34,9 +40,7 @@ const nodeTagContorl = {
         let controlsPosition = element["controls-position"] ? `controls-position='${element["controls-position"]}'` : ""
         let stepStrictly = element["step-strictly"] ? `step-strictly` : ""
         let precision = element.precision || element.precision === 0 ? `:precision='${element.precision}'` : ""
-        return ` <el-input-number ${vModel} ${placeholder} ${readonly} ${disabled} ${min}
-    ${max} ${step} ${size} ${controlsPosition} ${stepStrictly} ${precision}
-    ></el-input-number>`
+        return ` <el-input-number ${vModel} ${placeholder} ${readonly} ${disabled} ${min} ${max} ${step} ${size} ${controlsPosition} ${stepStrictly} ${precision} ></el-input-number>`
     },
     "el-switch": element => {
         let { readonly, disabled, vModel } = attrBuilder(element);
@@ -179,7 +183,9 @@ const layouts = {
         }
         let tag = nodeTagContorl[config.tag](element);
         let required = config.required ? 'required' : ''
-        let str = `<el-form-item ${labelWidth} ${label} prop='${element.keyName}'  ${required}>${tag}</el-form-item>`
+        let str = `<el-form-item ${labelWidth} ${label} prop='${element.keyName}' ${required}>
+    ${tag}
+</el-form-item>`
         str = colWrapper(element, str)
         return str;
     },
@@ -197,7 +203,9 @@ function colWrapper(element, str) {
     if (someSpanIsNot24 || (element.__config__.span !== undefined && element.__config__.span === 24)) {
         return str
     } else {
-        return `<el-col :span="${element.__config__.span}">${str}</el-col>`
+        return `<el-col :span="${element.__config__.span}">
+    ${str}
+</el-col>`
     }
 }
 // vue template模板解析器
@@ -205,19 +213,19 @@ function buildFormTemplate(globalConfig, str) {
     let labelPosition = globalConfig.labelPosition ? `labelPosition="${globalConfig.labelPosition}"`: '';
     let disabled = globalConfig.disabled ? 'disabled':''
     let formStr = `<el-form 
-                    ref="${globalConfig.formRef}"
-                    ${disabled}
-                    ${labelPosition}
-                    :rules="${globalConfig.formRules}"
-                    :model="${globalConfig.formModel}"
-                    label-width="${globalConfig.labelWidth}px">
-                        ${str}
-                        ${buildFromBtns(globalConfig)}
-                    </el-form>`
+            ref="${globalConfig.formRef}"
+            ${disabled}
+            ${labelPosition}
+            :rules="${globalConfig.formRules}"
+            :model="${globalConfig.formModel}"
+            label-width="${globalConfig.labelWidth}px">
+                ${str}
+                ${buildFromBtns(globalConfig)}
+        </el-form>`
     if (someSpanIsNot24) {
         formStr = `<el-row :gutter="${globalConfig.gutter}">
-                    ${formStr}
-                </el-row>`
+                        ${formStr}
+                    </el-row>`
     }
     return  `${formStr}`
 }
@@ -226,13 +234,13 @@ function buildFromBtns(scheme) {
     let str = ''
     if (scheme.formBtns) {
       str = `<el-form-item size="large">
-               <el-button type="primary" @click="submitForm">提交</el-button>
-               <el-button @click="resetForm">重置</el-button>
-             </el-form-item>`
+    <el-button type="primary" @click="submitForm">提交</el-button>
+    <el-button @click="resetForm">重置</el-button>
+</el-form-item>`
       if (someSpanIsNot24) {
         str = `<el-col :span="24">
-                 ${str}
-               </el-col>`
+    ${str}
+</el-col>`
       }
     }
     return str
@@ -250,7 +258,8 @@ export function formBuild(formData) {
     cofigList.forEach(el => {
         htmlList.push(layouts[el.__config__.layout](el))
     });
-    let templateStr = buildFormTemplate(globalConfig, htmlList.join('\n'))
+    let htmlStr = htmlList.join('\n')
+    let templateStr = buildFormTemplate(globalConfig, htmlStr)
     return templateStr
 }
 

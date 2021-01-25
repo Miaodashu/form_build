@@ -136,7 +136,9 @@
 
 <script>
 import draggable from "vuedraggable";
+// eslint-disable-next-line no-unused-vars
 import { deepClone, exportFile } from "@/utils/index";
+import jsBeautify from "js-beautify";
 import DraggableItem from "./DraggableItem.vue";
 import RightPanel from "./RightPanel";
 import AceEditor from "vue2-ace-editor";
@@ -240,10 +242,10 @@ export default {
         comList: this.drawingList,
         formConf: this.formConf
       };
-      let str =
-        vueTemplate(formBuild(options)) +
-        vueScript(buildJs(options)) +
-        vueStyle();
+      let htmlCode = jsBeautify.html(formBuild(options));
+      let jsCode = jsBeautify.js(buildJs(options));
+      let cssCode = jsBeautify.css(vueStyle());
+      let str = vueTemplate(htmlCode) + vueScript(jsCode) + cssCode;
       exportFile(str);
     },
     // 拖拽结束
