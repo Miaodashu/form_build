@@ -17,6 +17,10 @@
 </template>
 
 <script>
+// `<script>
+//                           export default ${ jsCode }
+//                        </script>`
+
 export default {};
 </script>
 

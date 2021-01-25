@@ -12,7 +12,6 @@ import Vue from "vue";
 function init(html, js, el) {
     let jsCode = eval(`(${js})`);
     jsCode.template = `<div>${html}</div>`
-    console.log('jsCode', jsCode);
     var Profile = Vue.extend({
         template: `<div><child/></div>`,
         components: {

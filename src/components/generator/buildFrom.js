@@ -2,6 +2,17 @@
 /* eslint-disable prettier/prettier */
 let globalConfig; // 全局表单配置数据
 let someSpanIsNot24; // 是否有节点栅格化不为24
+
+export const vueTemplate = (str) => {
+    return `<template><div>${str}</div></template>`
+}
+export const vueStyle = () => {
+    return "<style lang='less' scoped></style>"
+}
+export const vueScript = (str) => {
+    return `<script>export default ${str}</script>`
+}
+
 // 标签解析器
 const nodeTagContorl = {
     "el-input": element => {
@@ -215,19 +226,19 @@ function buildFromBtns(scheme) {
     let str = ''
     if (scheme.formBtns) {
       str = `<el-form-item size="large">
-            <el-button type="primary" @click="submitForm">提交</el-button>
-            <el-button @click="resetForm">重置</el-button>
-          </el-form-item>`
+               <el-button type="primary" @click="submitForm">提交</el-button>
+               <el-button @click="resetForm">重置</el-button>
+             </el-form-item>`
       if (someSpanIsNot24) {
         str = `<el-col :span="24">
-            ${str}
-          </el-col>`
+                 ${str}
+               </el-col>`
       }
     }
     return str
   }
-// 暴漏出去的总方法
 
+// 暴漏出去的总方法
 export function formBuild(formData) {
     const htmlList = []
     // 全局form配置
@@ -236,10 +247,11 @@ export function formBuild(formData) {
     let cofigList = formData.comList
     // 判断节点是否存在span不为24得，如果等于24就不包裹el-col了 简化组件
     someSpanIsNot24 = cofigList.some(el => (el.__config__.span !== undefined && el.__config__.span !== 24))
-    console.log('someSpanIsNot24',someSpanIsNot24);
     cofigList.forEach(el => {
         htmlList.push(layouts[el.__config__.layout](el))
     });
     let templateStr = buildFormTemplate(globalConfig, htmlList.join('\n'))
     return templateStr
 }
+
+

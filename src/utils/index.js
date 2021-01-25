@@ -94,3 +94,20 @@ export function loadScript(src, callback) {
     };
   }
 }
+
+// 导出文件
+/**
+ * @author ZPP
+ * @param {*} content 导出内容
+ * @param {*} fileName 文件名称
+ */
+export function exportFile(content, fileName = "vueTemplate") {
+  let eleLink = document.createElement("a");
+  eleLink.download = `${fileName}.vue`;
+  eleLink.style.display = "none";
+  let blob = new Blob([content]);
+  eleLink.href = URL.createObjectURL(blob);
+  document.body.appendChild(eleLink);
+  eleLink.click();
+  document.body.removeChild(eleLink);
+}

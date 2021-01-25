@@ -41,16 +41,32 @@
     </div>
     <div class="conter-board">
       <div class="action-bar">
-        <el-button type="text" icon="el-icon-tickets" @click="handlePreviewJSON"
+        <el-button
+          :disabled="!drawingList.length"
+          type="text"
+          icon="el-icon-tickets"
+          @click="handlePreviewJSON"
           >查看JSON</el-button
         >
-        <el-button type="text" icon="el-icon-view" @click="handlePreview"
+        <el-button
+          :disabled="!drawingList.length"
+          type="text"
+          icon="el-icon-view"
+          @click="handlePreview"
           >预览</el-button
         >
-        <el-button type="text" icon="el-icon-download" @click="handleDownLoad"
+        <el-button
+          :disabled="!drawingList.length"
+          type="text"
+          icon="el-icon-download"
+          @click="handleDownLoad"
           >导出</el-button
         >
-        <el-button type="text" icon="el-icon-delete" @click="handleDel"
+        <el-button
+          :disabled="!drawingList.length"
+          type="text"
+          icon="el-icon-delete"
+          @click="handleDel"
           >删除</el-button
         >
       </div>
@@ -120,7 +136,7 @@
 
 <script>
 import draggable from "vuedraggable";
-import { deepClone } from "@/utils/index";
+import { deepClone, exportFile } from "@/utils/index";
 import DraggableItem from "./DraggableItem.vue";
 import RightPanel from "./RightPanel";
 import AceEditor from "vue2-ace-editor";
@@ -129,7 +145,13 @@ import {
   formConf,
   selectComponents
 } from "@/components/generator/config.js";
-// import { formBuild } from "@/components/generator/buildFrom.js";
+import {
+  formBuild,
+  vueTemplate,
+  vueScript,
+  vueStyle
+} from "@/components/generator/buildFrom.js";
+import { buildJs } from "@/components/generator/js.js";
 let tempActiveData;
 export default {
   name: "Home",
@@ -197,30 +219,32 @@ export default {
     },
     // 预览
     handlePreview() {
-      // this.$bus.$emit("templateData", this.drawingList);
+      if (!this.drawingList.length) return;
       sessionStorage.setItem(
         "templateData",
         JSON.stringify(this.drawingList, null, 2)
       );
-      // let options = {
-      //   comList: this.drawingList,
-      //   formConf: this.formConf
-      // };
-      // let strArr = formBuild(options);
-      // console.log(JSON.stringify(strArr.join("\n"), null, 2));
       this.$router.push("/Demo");
     },
     // 查看JSON
     handlePreviewJSON() {
+      if (!this.drawingList.length) return;
       this.ace_content = JSON.stringify(this.drawingList, null, 2);
       this.ace_btn = false;
       this.dialogTableVisible = true;
     },
     // 导出
     handleDownLoad() {
-      // ss
-      console.log(555);
-      this.$router.push("/Demo");
+      if (!this.drawingList.length) return;
+      let options = {
+        comList: this.drawingList,
+        formConf: this.formConf
+      };
+      let str =
+        vueTemplate(formBuild(options)) +
+        vueScript(buildJs(options)) +
+        vueStyle();
+      exportFile(str);
     },
     // 拖拽结束
     onEnd(obj) {
